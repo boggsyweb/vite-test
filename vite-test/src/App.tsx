@@ -11,15 +11,20 @@ function App() {
     const getBlogEntries = async () => {
       try {
         const entries = await contentfulClient.getEntries({ content_type: 'blog', order: ['-fields.date'], include: 1 });
-        setBlogEntries(entries);
+  
+        // Cast entries to BlogQueryResult
+        const transformedEntries = entries as unknown as BlogQueryResult;
+  
+        setBlogEntries(transformedEntries);
       } catch (err) {
         setError('Error fetching data. Please try again later.');
         console.error('Error fetching data:', err);
       }
     };
-
+  
     getBlogEntries();
   }, []);
+  
 
   if (blogEntries === null) {
     return <div>Loading...</div>;
