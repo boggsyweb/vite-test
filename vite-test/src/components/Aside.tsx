@@ -30,6 +30,7 @@ function Aside() {
   if (blogEntries === null) {
     return <div>Loading...</div>;
   }
+  const limitedBlogEntries = blogEntries.items.slice(0, 4);
 
   return (
     <div>
@@ -38,7 +39,7 @@ function Aside() {
         <h3 className="text-xl font-bold">Recent Posts</h3>
         <hr className="border-[#ff46569d] border-2 w-full"/>
         </span>
-        {blogEntries.items.map((singlePost, index) => {
+        {limitedBlogEntries.map((singlePost, index) => {
         const { slug, title, image } = singlePost.fields;
         return (
             <div key={index}>

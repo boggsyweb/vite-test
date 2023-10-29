@@ -49,7 +49,6 @@ function Home() {
                 {title}
               </h2>
               </Link>
-
                 <span className="flex flex-col  items-center sm:flex-row">
                 <p className="sm:mx-10">{readTime} read</p>
                   <span className="font-semibold  opacity-70">
@@ -63,7 +62,12 @@ function Home() {
                   </span>
               </span>
             </span>
-            <div className="max-h-32 overflow-hidden">{documentToReactComponents(content)}</div>
+            <div className="max-h-32 overflow-hidden">{documentToReactComponents(content)}
+            </div>
+            <Link className="group" to={`/articles/${slug}`}>
+            <div className="w-32 my-0 mx-auto translate-y-14 bg-[#4A4870] text-slate-50 font-semibold text-center py-2 rounded-sm shadow-[4px_4px_5px_0px_rgba(0,0,0,0.1)] hover:shadow-[3px_3px_0px_1px_#ff4656c5] dark:shadow-[3px_3px_0px_1px_rgba(0,0,0,0.3)] transition-shadow duration-200" key={slug}>Read More
+            </div>
+            </Link>
           </div>
         );
       })}
