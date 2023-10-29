@@ -17,11 +17,10 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  transition: all 200ms;
+
 }
-img {
-  max-width: 100%;
-  display: block;
-}
+
 body {
   margin: 0;
   display: flex;
@@ -31,4 +30,8 @@ body {
   line-height: 1.5;
   color: var(--foreground);
   background: var(--background);
+}
+img {
+  max-width: 100%;
+  display: block;
 }
