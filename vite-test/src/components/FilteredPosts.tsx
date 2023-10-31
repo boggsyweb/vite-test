@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { useParams, Outlet, Link } from "react-router-dom";
 import { BlogQueryResult } from "../lib/types";
 import { getTagStyle } from "../functions/TagStyle";
 import { contentfulClient } from "../lib/createClient";
@@ -8,47 +8,40 @@ import Layout from "../components/Layout";
 
 const client = contentfulClient;
 
-function Home() {
-  const [blogEntries, setBlogEntries] = useState<BlogQueryResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [state, setState] = useState('');
+function FilteredPosts() {
+  const { tag } = useParams();
+  const [filteredBlogEntries, setFilteredBlogEntries] =
+    useState<BlogQueryResult | null>(null);
 
   useEffect(() => {
-    client
-      .getEntries({
-        content_type: "blog",
-        order: ["-fields.date"],
-        include: 1,
-      })
-      .then((entries) => {
+    const getFilteredBlogEntries = async () => {
+      try {
+        const entries = await client.getEntries({
+          content_type: "blog",
+          order: ["-fields.date"],
+          include: 1,
+          "fields.tags": tag,
+        });
         // Cast entries to BlogQueryResult
         const transformedEntries = entries as unknown as BlogQueryResult;
-        setBlogEntries(transformedEntries);
-        setState('success');
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        setError(err);
-        setState('error');
-      });
-  }, []); // The dependency array is empty to run this effect only once
+        setFilteredBlogEntries(transformedEntries);
+      } catch (error) {
+        console.error("Error fetching filtered data:", error);
+      }
+    };
 
-  if (state === 'error') {
-    return (
-      <h1>
-      {error?.toString() ?? 'An error occurred.'}
-      </h1>
-    );
+    getFilteredBlogEntries();
+  }, [tag]);
+
+  if (filteredBlogEntries === null) {
+    return <div>Loading...</div>;
   }
 
   return (
     <Layout>
-        {state === 'loading' ? (
-          <h1></h1>
-        ) : (
       <div className="flex items-center min-h-screen flex-col py-12 gap-y-12">
-        {blogEntries && blogEntries.items ? (
-          blogEntries.items.map((singlePost, index) => {
+        <h1 className="text-3xl font-extrabold">{tag}</h1>
+        {filteredBlogEntries.items.map((singlePost, index) => {
           const { slug, title, content, date, readTime, image, tags } =
             singlePost.fields;
           return (
@@ -65,7 +58,7 @@ function Home() {
                 <span className="flex flex-col">
                   <Link to={`/articles/${slug}`}>
                     <h2
-                      className="font-extrabold text-2xl text-left mb-2 underline decoration-transparent transition-colors duration-300 hover:decoration-[#ff4656]"
+                      className="font-extrabold text-2xl text-left underline decoration-transparent transition-colors duration-300 hover:decoration-[#ff46569d]"
                       key={slug}
                     >
                       {title}
@@ -101,23 +94,20 @@ function Home() {
               <article className="max-h-32 overflow-hidden">
                 {documentToReactComponents(content)}
               </article>
-              <Link
-                className="group w-32 my-0 mx-auto translate-y-14 bg-[#4A4870] text-slate-50 font-semibold text-center py-2 rounded-sm shadow-[4px_4px_5px_0px_rgba(0,0,0,0.1)] dark:shadow-[3px_3px_0px_1px_rgba(0,0,0,0.3)] transition-shadow duration-300 hover:shadow-[3px_3px_0px_1px_#ff4656c5]"
-                to={`/articles/${slug}`}
-              >
-                <div key={slug}>Read More</div>
+              <Link className="group" to={`/articles/${slug}`}>
+                <div
+                  className="w-32 my-0 mx-auto translate-y-14 bg-[#4A4870] text-slate-50 font-semibold text-center py-2 rounded-sm shadow-[4px_4px_5px_0px_rgba(0,0,0,0.1)] hover:shadow-[3px_3px_0px_1px_#ff4656c5] dark:shadow-[3px_3px_0px_1px_rgba(0,0,0,0.3)] transition-shadow duration-200"
+                  key={slug}
+                >
+                  Read More
+                </div>
               </Link>
             </div>
-            );
-          })
-        ) : (
-          <h1>No blog entries found.</h1>
-        )}
+          );
+        })}
         <Outlet />
       </div>
-      )}
     </Layout>
   );
 }
-
-export default Home;
+export default FilteredPosts;

@@ -5,10 +5,10 @@ const getContentfulClient = () => {
   const { VITE_SPACE_ID, VITE_ACCESS_TOKEN } = import.meta.env;
 
   if (!VITE_SPACE_ID) {
-    throw new Error('contentful SPACE_ID is missing');
+    throw new Error("contentful SPACE_ID is missing");
   }
   if (!VITE_ACCESS_TOKEN) {
-    throw new Error('contentful ACCESS_TOKEN is missing');
+    throw new Error("contentful ACCESS_TOKEN is missing");
   }
 
   const client = createClient({

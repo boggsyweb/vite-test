@@ -4,13 +4,13 @@
 
 :root {
   --foreground: #454360;
-  --background: #F9F9FE;
+  --background: #f9f9fe;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground: #F9F9FE;
-    --background: #181528; 
+    --foreground: #f9f9fe;
+    --background: #181528;
   }
 }
 *,
@@ -18,7 +18,6 @@
 *::after {
   box-sizing: border-box;
   transition: all 200ms;
-
 }
 
 body {
@@ -26,12 +25,20 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: 'Gabarito', sans-serif;
+  font-family: "Gabarito", sans-serif;
   line-height: 1.5;
+  scroll-behavior: smooth;
   color: var(--foreground);
   background: var(--background);
 }
 img {
   max-width: 100%;
   display: block;
+}
+
+article a {
+  text-decoration: underline;
+}
+.active {
+  color: #ff4656;
 }

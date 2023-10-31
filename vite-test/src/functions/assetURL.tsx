@@ -1,6 +1,6 @@
 import { contentfulClient } from "../lib/createClient";
 
-const client = contentfulClient
+const client = contentfulClient;
 
 export async function fetchAssetUrl(assetId: string) {
   try {

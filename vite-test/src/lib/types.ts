@@ -8,12 +8,12 @@ export type GlossaryPage = {
       fields: {
         file: {
           url: string;
-        }
-      }
-    }
+        };
+      };
+    };
     partTwo: Document;
-  }
-}
+  };
+};
 
 export type AboutPage = {
   fields: {
@@ -23,11 +23,11 @@ export type AboutPage = {
       fields: {
         file: {
           url: string;
-        }
-      }
-    }
-  }
-}
+        };
+      };
+    };
+  };
+};
 
 export type BlogItem = {
   fields: {
@@ -36,6 +36,7 @@ export type BlogItem = {
     date: Date;
     content: Document;
     readTime: string;
+    tags: string;
     image: {
       fields: {
         file: {
@@ -51,4 +52,3 @@ export type BlogQueryResult = {
   fields: any;
   items: BlogItems;
 };
-
