@@ -8,44 +8,32 @@ import Layout from "../components/Layout";
 
 const client = contentfulClient;
 
+
 function Home() {
   const [blogEntries, setBlogEntries] = useState<BlogQueryResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [state, setState] = useState('');
+
 
   useEffect(() => {
-    client
-      .getEntries({
+    const getBlogEntries = async () => {
+    try {
+      const entries = await client.getEntries({
         content_type: "blog",
         order: ["-fields.date"],
         include: 1,
-      })
-      .then((entries) => {
+      });
         // Cast entries to BlogQueryResult
         const transformedEntries = entries as unknown as BlogQueryResult;
         setBlogEntries(transformedEntries);
-        setState('success');
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        setError(err);
-        setState('error');
-      });
-  }, []); // The dependency array is empty to run this effect only once
+      } catch (error) {
+        console.error("Error fetching filtered data:", error);
+      }
+    };
+    getBlogEntries()
+  })
 
-  if (state === 'error') {
-    return (
-      <h1>
-      {error?.toString() ?? 'An error occurred.'}
-      </h1>
-    );
-  }
 
   return (
     <Layout>
-        {state === 'loading' ? (
-          <h1></h1>
-        ) : (
       <div className="flex items-center min-h-screen flex-col py-12 gap-y-12">
         {blogEntries && blogEntries.items ? (
           blogEntries.items.map((singlePost, index) => {
@@ -115,7 +103,7 @@ function Home() {
         )}
         <Outlet />
       </div>
-      )}
+   
     </Layout>
   );
 }

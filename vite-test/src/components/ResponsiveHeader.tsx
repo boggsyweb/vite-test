@@ -20,7 +20,7 @@ function Header() {
   };
 
   return (
-    <nav className="bg-white dark:bg-[#201C35] sticky w-full z-20 top-0 left-0 shadow-[4px_4px_5px_0px_rgba(0,0,0,0.1)] dark:shadow-[5px_5px_5px_0px_rgba(0,0,0,0.3)] ">
+    <nav className="max-w-screen-2xl bg-white dark:bg-[#201C35] sticky w-full z-20 top-0 left-0 shadow-[4px_4px_5px_0px_rgba(0,0,0,0.1)] dark:shadow-[5px_5px_5px_0px_rgba(0,0,0,0.3)] ">
       <div className="max-w-screen-xl flex md:flex-col flex-wrap items-center justify-between mx-auto p-4">
         <span className="flex items-center">
           {logoImageUrl && (
